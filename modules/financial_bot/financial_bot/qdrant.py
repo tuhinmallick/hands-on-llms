@@ -28,6 +28,4 @@ def build_qdrant_client(
                 "QDRANT_API_KEY must be set as environment variable or manually passed as an argument."
             )
 
-    client = qdrant_client.QdrantClient(url, api_key=api_key)
-
-    return client
+    return qdrant_client.QdrantClient(url, api_key=api_key)

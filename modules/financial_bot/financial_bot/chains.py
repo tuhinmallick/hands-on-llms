@@ -81,10 +81,7 @@ class ContextExtractorChain(Chain):
             collection_name=self.vector_collection,
         )
 
-        context = ""
-        for match in matches:
-            context += match.payload["summary"] + "\n"
-
+        context = "".join(match.payload["summary"] + "\n" for match in matches)
         return {
             "context": context,
         }

@@ -154,9 +154,7 @@ class FinancialBot:
             "question": question,
             "to_load_history": to_load_history if to_load_history else [],
         }
-        response = self.finbot_chain.run(inputs)
-
-        return response
+        return self.finbot_chain.run(inputs)
 
     def stream_answer(self) -> Iterable[str]:
         """Stream the answer from the LLM after each token is generated after calling `answer()`."""

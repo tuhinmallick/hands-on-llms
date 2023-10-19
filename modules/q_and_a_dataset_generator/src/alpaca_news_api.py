@@ -68,16 +68,15 @@ def fetch_batch_of_news(
         # extract next page token (if any)
         next_page_token = news_json.get("next_page_token", None)
 
-        for n in news_json["news"]:
-            list_of_news.append(
-                News(
-                    headline=n["headline"],
-                    date=n["updated_at"],
-                    summary=n["summary"],
-                    content=n["content"],
-                )
+        list_of_news.extend(
+            News(
+                headline=n["headline"],
+                date=n["updated_at"],
+                summary=n["summary"],
+                content=n["content"],
             )
-
+            for n in news_json["news"]
+        )
     else:
         logger.error("Request failed with status code:", response.status_code)
 
