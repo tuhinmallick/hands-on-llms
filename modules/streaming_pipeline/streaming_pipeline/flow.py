@@ -25,7 +25,7 @@ def build(
     debug: bool = False,
 ) -> Dataflow:
     model = EmbeddingModelSingleton(cache_dir=model_cache_dir)
-    is_input_mocked = debug is True and is_batch is False
+    is_input_mocked = debug and not is_batch
 
     flow = Dataflow()
     flow.input(
@@ -51,7 +51,7 @@ def _build_input(
     to_datetime: Optional[datetime.datetime] = None,
     is_input_mocked: bool = False,
 ) -> Input:
-    if is_input_mocked is True:
+    if is_input_mocked:
         return TestingInput(mocked.financial_news)
 
     if is_batch:

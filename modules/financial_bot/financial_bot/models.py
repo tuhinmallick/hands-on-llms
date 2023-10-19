@@ -58,11 +58,7 @@ class StopOnTokens(StoppingCriteria):
     def __call__(
         self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs
     ) -> bool:
-        for stop_id in self._stop_ids:
-            if input_ids[0][-1] == stop_id:
-                return True
-
-        return False
+        return any(input_ids[0][-1] == stop_id for stop_id in self._stop_ids)
 
 
 def build_huggingface_pipeline(
@@ -77,7 +73,7 @@ def build_huggingface_pipeline(
 ):
     """Using our custom LLM + Finetuned checkpoint we create a HF pipeline"""
 
-    if debug is True:
+    if debug:
         return (
             HuggingFacePipeline(
                 pipeline=MockedPipeline(f=lambda _: "You are doing great!")

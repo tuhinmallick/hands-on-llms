@@ -18,12 +18,10 @@ from qdrant_client import QdrantClient
 
 def get_qdrant_client() -> QdrantClient:
     """"""
-    qdrant_client = QdrantClient(
-        url=QDRANT_API_URL, 
+    return QdrantClient(
+        url=QDRANT_API_URL,
         api_key=QDRANT_API_KEY,
     )
-
-    return qdrant_client
 
 def init_collection(
     qdrant_client: QdrantClient,

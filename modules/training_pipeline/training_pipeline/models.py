@@ -147,6 +147,4 @@ def prompt(
         input_length = input_ids.shape[-1]
         output = output[input_length:]
 
-    output = tokenizer.decode(output, skip_special_tokens=True)
-
-    return output
+    return tokenizer.decode(output, skip_special_tokens=True)

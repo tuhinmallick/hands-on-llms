@@ -22,12 +22,10 @@ def build_flow(
         f"Extracting news from {from_datetime} to {to_datetime} [n_days={latest_n_days}]"
     )
 
-    flow = flow_builder(
+    return flow_builder(
         is_batch=True,
         from_datetime=from_datetime,
         to_datetime=to_datetime,
         model_cache_dir=model_cache_dir,
         debug=debug,
     )
-
-    return flow

@@ -83,14 +83,12 @@ def load_bot(
     utils.log_available_ram()
     logger.info("#" * 100)
 
-    bot = FinancialBot(
+    return FinancialBot(
         model_cache_dir=Path(model_cache_dir) if model_cache_dir else None,
         embedding_model_device=embedding_model_device,
         streaming=True,
         debug=debug,
     )
-
-    return bot
 
 
 bot = load_bot(
@@ -116,8 +114,7 @@ def predict(message: str, history: List[List[str]], about_me: str) -> str:
         t = Thread(target=bot.answer, kwargs=generate_kwargs)
         t.start()
 
-        for partial_answer in bot.stream_answer():
-            yield partial_answer
+        yield from bot.stream_answer()
     else:
         yield bot.answer(**generate_kwargs)
 

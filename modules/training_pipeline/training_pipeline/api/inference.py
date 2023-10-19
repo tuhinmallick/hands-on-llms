@@ -50,10 +50,7 @@ class InferenceAPI:
         self._device = device
 
         self._model, self._tokenizer, self._peft_config = self.load_model()
-        if self._root_dataset_dir is not None:
-            self._dataset = self.load_data()
-        else:
-            self._dataset = None
+        self._dataset = None if self._root_dataset_dir is None else self.load_data()
 
     @classmethod
     def from_config(
@@ -76,11 +73,7 @@ class InferenceAPI:
     def load_data(self) -> Dataset:
         logger.info(f"Loading FinQA datasets from {self._root_dataset_dir=}")
 
-        if self._debug:
-            max_samples = 3
-        else:
-            max_samples = 20
-
+        max_samples = 3 if self._debug else 20
         dataset = qa.FinanceDataset(
             data_path=self._root_dataset_dir / self._test_dataset_file,
             scope=constants.Scope.INFERENCE,

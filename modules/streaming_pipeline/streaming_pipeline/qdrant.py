@@ -30,11 +30,7 @@ class QdrantVectorOutput(DynamicOutput):
         self._collection_name = collection_name
         self._vector_size = vector_size
 
-        if client:
-            self.client = client
-        else:
-            self.client = build_qdrant_client()
-
+        self.client = client if client else build_qdrant_client()
         try:
             self.client.get_collection(collection_name=self._collection_name)
         except (UnexpectedResponse, ValueError):
@@ -66,9 +62,7 @@ def build_qdrant_client(url: Optional[str] = None, api_key: Optional[str] = None
                 "QDRANT_API_KEY must be set as environment variable or manually passed as an argument."
             )
 
-    client = QdrantClient(url, api_key=api_key)
-
-    return client
+    return QdrantClient(url, api_key=api_key)
 
 
 class QdrantVectorSink(StatelessSink):

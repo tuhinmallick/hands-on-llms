@@ -69,13 +69,11 @@ def load_bot(
     utils.log_available_ram()
     logger.info("#" * 100)
 
-    bot = FinancialBot(
+    return FinancialBot(
         model_cache_dir=Path(model_cache_dir) if model_cache_dir else None,
         embedding_model_device=embedding_model_device,
         debug=debug,
     )
-
-    return bot
 
 
 def load_bot_dev(
@@ -101,18 +99,14 @@ def load_bot_dev(
 def run(**inputs):
     """Run the bot under the Beam RESTful API endpoint."""
 
-    response = _run(**inputs)
-
-    return response
+    return _run(**inputs)
 
 
 @financial_bot_dev.rest_api(keep_warm_seconds=300, loader=load_bot_dev)
 def run_dev(**inputs):
     """Run the bot under the Beam RESTful API endpoint [Dev Mode]."""
 
-    response = _run(**inputs)
-
-    return response
+    return _run(**inputs)
 
 
 def run_local(
@@ -123,7 +117,7 @@ def run_local(
 ):
     """Run the bot locally in production or dev mode."""
 
-    if debug is True:
+    if debug:
         bot = load_bot_dev(model_cache_dir=None)
     else:
         bot = load_bot(model_cache_dir=None)
@@ -135,9 +129,7 @@ def run_local(
         "context": bot,
     }
 
-    response = _run(**inputs)
-
-    return response
+    return _run(**inputs)
 
 
 def _run(**inputs):
@@ -154,11 +146,9 @@ def _run(**inputs):
     input_payload = {
         "about_me": inputs["about_me"],
         "question": inputs["question"],
-        "to_load_history": inputs["history"] if "history" in inputs else [],
+        "to_load_history": inputs.get("history", []),
     }
-    response = bot.answer(**input_payload)
-
-    return response
+    return bot.answer(**input_payload)
 
 
 if __name__ == "__main__":
